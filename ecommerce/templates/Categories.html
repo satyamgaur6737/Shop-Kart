@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ecommerce Home
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-gray-200 py-10">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <h2 class="text-4xl font-bold">Shop by Categories</h2>
+    <p class="text-gray-600 mt-2">Find products by category</p>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-12">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+      <!-- Category Card -->
+      <div class="bg-white rounded shadow hover:shadow-lg transition p-6 text-center">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/05/08/iphone-1867461_1280.jpg"
+             class="h-32 mx-auto mb-4">
+        <h3 class="text-xl font-semibold">Electronics</h3>
+        <p class="text-gray-500 mt-2">Mobiles, Laptops, Gadgets</p>
+        <a href="#" class="inline-block mt-4 text-blue-600 font-semibold">
+          View Products →
+        </a>
+      </div>
+
+      <div class="bg-white rounded shadow hover:shadow-lg transition p-6 text-center">
+        <img src="https://cdn.pixabay.com/photo/2015/05/31/10/55/t-shirt-791459_1280.jpg"
+             class="h-32 mx-auto mb-4">
+        <h3 class="text-xl font-semibold">Fashion</h3>
+        <p class="text-gray-500 mt-2">Clothes & Accessories</p>
+        <a href="#" class="inline-block mt-4 text-blue-600 font-semibold">
+          View Products →
+        </a>
+      </div>
+
+      <div class="bg-white rounded shadow hover:shadow-lg transition p-6 text-center">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/32/shoes-1867379_1280.jpg"
+             class="h-32 mx-auto mb-4">
+        <h3 class="text-xl font-semibold">Shoes</h3>
+        <p class="text-gray-500 mt-2">Sports & Casual Shoes</p>
+        <a href="#" class="inline-block mt-4 text-blue-600 font-semibold">
+          View Products →
+        </a>
+      </div>
+
+      <div class="bg-white rounded shadow hover:shadow-lg transition p-6 text-center">
+        <img src="https://cdn.pixabay.com/photo/2014/12/21/23/28/coffee-575030_1280.png"
+             class="h-32 mx-auto mb-4">
+        <h3 class="text-xl font-semibold">Grocery</h3>
+        <p class="text-gray-500 mt-2">Daily Needs & Food</p>
+        <a href="#" class="inline-block mt-4 text-blue-600 font-semibold">
+          View Products →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

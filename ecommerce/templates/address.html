@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto my-10 px-4">
+  
+  <!-- Heading -->
+  <h3 class="text-2xl font-semibold mb-6 capitalize">
+    Welcome {{request.user}}
+  </h3>
+
+  <div class="flex gap-8">
+    
+    <!-- Sidebar -->
+    <div class="w-1/4 border-r pr-4">
+      <ul class="space-y-3">
+        <li>
+          <a href="{% url 'profile' %}"
+             class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg hover:bg-blue-50 transition">
+            Profile
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'address' %}"
+   class="block text-center py-2 rounded-lg transition
+   {% if request.resolver_match.url_name == 'address' %}
+      bg-blue-600 text-white
+   {% else %}
+      border border-blue-600 text-blue-600 hover:bg-blue-50
+   {% endif %}">
+   Address
+</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Address Section -->
+    <div class="w-3/4">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {% for address in addresses %}
+        
+
+        <div class="block  border border-black text-black  py-2 rounded-lg hover:bg-blue-50 transition">
+          <h4 class="text-xl text-center font-semibold mb-4">Your Addresses {{forloop.counter}} </h4>
+            
+          
+          <h5 class="font-semibold pl-[5px] text-lg mb-2">
+         
+             {{ address.name }}
+           
+          </h5>
+          <p class="text-gray-600 pl-[5px]">
+         
+            {{ address.address }} <br>
+            {{ address.city }}, {{ address.state }} <br>
+            {{ address.country }} - {{ address.pincode }} <br>
+            
+          </p>
+         
+        </div>
+        {% empty %}
+        <p class="text-gray-500">No address found.</p>
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

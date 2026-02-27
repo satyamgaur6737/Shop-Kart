@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Add Address{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6 text-center">Add Delivery Address</h2>
+
+    <form method="POST" class="bg-white p-6 rounded-xl shadow space-y-4">
+        {% csrf_token %}
+
+        <div>
+            <label class="block text-sm font-medium mb-1">Full Name</label>
+            <input type="text" name="name" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium mb-1">Address / Locality</label>
+            <input type="text" name="locality" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium mb-1">City</label>
+            <input type="text" name="city" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium mb-1">Pincode</label>
+            <input type="text" name="pincode" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium mb-1">State</label>
+            <select name="state" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200">
+                {% for s in STATE_CHOICES %}
+                    <option value="{{ s.0 }}">{{ s.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold">
+            Save Address
+        </button>
+    </form>
+</div>
+{% endblock %}

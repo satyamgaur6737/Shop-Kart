@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+
+<div class="container mx-auto mt-10 p-5">
+    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Shopping Cart</h1>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        <!-- LEFT SIDE (Cart Items) -->
+        <div class="w-full lg:w-3/4">
+            {% if carts %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700 uppercase text-sm">
+                            <th class="p-4">Product</th>
+                            <th class="p-4">Price</th>
+                            <th class="p-4 text-center">Quantity</th>
+                            <th class="p-4">Total</th>
+                            <th class="p-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in carts %}
+                        <tr class="border-b hover:bg-gray-50 transition">
+                            
+                            <!-- Product Info -->
+                            <td class="p-4 flex items-center gap-4">
+                                {% if item.product.product_image %}
+                                <img src="{{ item.product.product_image.url }}" 
+                                     alt="{{ item.product.title }}" 
+                                     class="w-16 h-16 object-cover rounded">
+                                {% endif %}
+                                <span class="font-semibold text-gray-800">
+                                    {{ item.product.title }}
+                                </span>
+                            </td>
+
+                            <!-- Price -->
+                            <td class="p-4 text-gray-600">
+                                ₹{{ item.product.discounted_price }}
+                            </td>
+
+                            <!-- Quantity -->
+                            <td class="p-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+
+                                    <a href="{% url 'minus_quantity' %}?prod_id={{ item.product.id }}"
+                                       class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+                                        -
+                                    </a>
+
+                                    <span class="bg-gray-100 px-4 py-1 rounded-full border">
+                                        {{ item.quantity }}
+                                    </span>
+
+                                    <a href="{% url 'plus_quantity' %}?prod_id={{ item.product.id }}"
+                                       class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+                                        +
+                                    </a>
+
+                                </div>
+                            </td>
+
+                            <!-- Total Per Item -->
+                            <td class="p-4 font-bold text-gray-800">
+                                ₹{{ item.total }}
+                            </td>
+
+                            <!-- Remove -->
+                            <td class="p-4 text-center">
+                                <a href="{% url 'remove_cart' %}?prod_id={{ item.product.id }}" 
+                                   class="text-red-500 hover:text-red-700 underline text-sm">
+                                   Remove
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="bg-white p-10 rounded-lg shadow-md text-center">
+                <p class="text-xl text-gray-600">Your cart is empty!</p>
+                <a href="/" class="mt-4 inline-block text-blue-600 hover:underline">
+                    Continue Shopping
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- RIGHT SIDE (Summary) -->
+        <div class="w-full lg:w-1/4">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">
+                    Order Summary
+                </h2>
+
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Amount :</span>
+                    <span class="font-semibold">₹{{ amount }}</span>
+                </div>
+
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Shipping:</span>
+                    <span class="text-green-600 font-semibold">₹70</span>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="flex justify-between mb-6">
+                    <span class="text-lg font-bold">Grand Total:</span>
+                    <span class="text-lg font-bold text-indigo-600">
+                        ₹{{ total_amount }}
+                    </span>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">
+                    Proceed to Checkout
+                </a>
+
+                <a href="/" class="block text-center mt-4 text-gray-500 text-sm hover:underline">
+                    ← Back to Shop
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

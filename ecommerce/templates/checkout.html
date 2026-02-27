@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock title %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 mt-10">
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <!-- 🔵 LEFT SIDE - Order Summary -->
+    <div class="md:col-span-2">
+
+      <h2 class="text-2xl font-semibold mb-4">Order Summary</h2>
+      <hr class="mb-4">
+
+      {% if cart_items %}
+
+        <!-- ✅ Products List -->
+        {% for item in cart_items %}
+        <div class="bg-gray-100 shadow border border-black rounded-lg p-4 mb-4">
+          
+          <div class="flex justify-between items-center">
+            
+            <!-- 🔹 Left Side: Image + Details -->
+            <div class="flex items-center gap-4">
+              
+              <!-- Product Image -->
+              <div>
+               
+  <img src="{{ item.product.product_image.url }}" 
+       alt="{{ item.product.title }}"
+       class="w-24 h-24 object-cover rounded">
+
+  
+              </div>
+
+              <!-- Product Details -->
+              <div>
+                <h5 class="text-lg font-semibold">
+                  {{ item.product.title }}
+                </h5>
+
+                <p class="text-gray-600">
+                  Quantity: {{ item.quantity }}
+                </p>
+
+                <p class="text-gray-600">
+                  Price: ₹ {{ item.product.discounted_price }}
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        {% endfor %}
+
+        <!-- ✅ Price Summary -->
+        <div class="bg-white shadow border border-black rounded-lg p-4 mt-6">
+          <h2 class="text-xl font-semibold mb-4">Price Summary</h2>
+          
+          <p>Subtotal: ₹ {{ amount }}</p>
+          <p>Shipping: ₹ {{ shipping_amount }}</p>
+          
+          <h4 class="text-lg font-bold mt-2">
+            Total: ₹ {{ totalamount }}
+          </h4>
+        </div>
+
+      {% else %}
+        <p class="text-gray-600">Your cart is empty.</p>
+      {% endif %}
+
+    </div>
+
+
+    <!-- 🔵 RIGHT SIDE - Shipping Address -->
+    <div class="sticky top-20 h-fit">
+
+      <h2 class="text-2xl font-semibold mb-4">Select Shipping Address</h2>
+      <hr class="mb-4">
+
+      <form method="post" action="{% url 'paymentdone' %}">
+        {% csrf_token %}
+
+        {% if addresses %}
+          {% for address in addresses %}
+
+          <div class="bg-gray-100 shadow border border-black rounded-lg p-4 mb-4">
+
+            <label class="flex items-start gap-3 cursor-pointer">
+              
+              <input type="radio"
+                     name="custid"
+                     id="custadd{{ forloop.counter }}"
+                     value="{{ address.id }}"
+                     class="mt-1"
+                     required>
+
+              <div>
+                <h5 class="font-semibold">{{ address.name }}</h5>
+                <p class="text-gray-600">
+                  {{ address.city }}, {{ address.state }}
+                </p>
+                <p class="text-gray-600">
+                  Pincode: {{ address.pincode }}
+                </p>
+              </div>
+
+            </label>
+
+          </div>
+
+          {% endfor %}
+
+          <div class="text-right mt-4">
+            <button type="submit"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg shadow">
+                Continue
+            </button>
+          </div>
+
+        {% else %}
+          <p>No address found.</p>
+        {% endif %}
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock content %}

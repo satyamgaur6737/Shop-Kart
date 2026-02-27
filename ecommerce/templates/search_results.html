@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 py-10">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Search Results for "{{ query }}"
+  </h2>
+
+  {% if products %}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for product in products %}
+    <div class="bg-white shadow-md rounded-xl p-4">
+
+      <img src="{{ product.product_image.url }}"
+           class="w-full h-40 object-contain mb-3">
+
+      <h3 class="font-semibold">{{ product.title }}</h3>
+      <p class="text-blue-600 font-bold">
+        ₹{{ product.discounted_price }}
+      </p>
+
+       <div class="flex gap-2">
+                <form action="{% url 'add-to-cart' %}" method="GET" class="flex-1">
+    
+    <input type="hidden" name="prod_id" value="{{ f.id }}">
+    <button type="submit"
+        class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition-all duration-300 text-sm active:scale-95">
+        Add to Cart
+    </button>
+</form>
+                <a href="{% url 'checkout' %}"
+                  class="flex-1 text-center bg-[#1e293b] hover:bg-[#334155] text-white font-medium py-2.5 rounded-xl transition-all duration-300 text-sm active:scale-95">
+                  Buy Now
+                </a>
+              </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+    <p class="text-gray-500 mt-6">No products found.</p>
+  {% endif %}
+
+</div>
+
+{% endblock %}
