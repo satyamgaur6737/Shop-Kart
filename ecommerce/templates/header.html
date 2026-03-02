@@ -1,7 +1,6 @@
 <nav class="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4">
-
-    <div class="flex justify-between items-center h-16">
+    <div class="flex justify-between items-center h-16 gap-4">
 
       <!-- Logo -->
       <a href="/" class="text-2xl font-extrabold text-blue-600 flex items-center gap-2">
@@ -12,89 +11,136 @@
       <!-- Desktop Menu -->
       <div class="hidden lg:flex items-center gap-6">
         <a href="/" class="text-gray-700 hover:text-blue-600 font-semibold">Home</a>
-        <a href="{% url 'shop' %}" class="text-gray-700 hover:text-blue-600 font-semibold">Shop</a>
-        <a href="{% url 'contact' %}" class="text-gray-700 hover:text-blue-600 font-semibold">Contact</a>
+        <a href="/shop/" class="text-gray-700 hover:text-blue-600 font-semibold">Shop</a>
+        <a href="/contact/" class="text-gray-700 hover:text-blue-600 font-semibold">Contact</a>
       </div>
 
-      <!-- Search (Desktop) -->
-      <div class="hidden md:block flex-1 max-w-xs lg:max-w-md mx-4">
-        <form action="/search/" method="GET" class="relative">
-          <input type="text" name="query" placeholder="Search products..."
-            class="w-full bg-gray-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-full py-2 pl-4 pr-20 outline-none text-sm transition">
+      <!-- Desktop Search -->
+      <div class="hidden md:block flex-1 max-w-md">
+        <form action="/search/" method="GET" class="relative group">
 
+          <input type="text" name="query" placeholder="Search products..."
+            class="w-full bg-gray-100 border-2 border-transparent focus:bg-white
+                   focus:border-blue-500 rounded-full py-2 pl-10 pr-20
+                   outline-none text-sm transition">
+
+          <!-- Search Icon -->
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-gray-400 group-focus-within:text-blue-500"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+
+          <!-- Search Button -->
           <button type="submit"
-            class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-1.5 rounded-full">
+            class="absolute right-1.5 top-1/2 -translate-y-1/2
+                   bg-blue-600 hover:bg-blue-700 text-white
+                   text-xs font-semibold px-4 py-1.5 rounded-full">
             Search
           </button>
         </form>
       </div>
 
       <!-- Right Section -->
-<div class="flex items-center gap-4">
+      <div class="flex items-center gap-4">
 
-  {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
 
-  <!-- Profile (Desktop) -->
-  <a href="{% url 'profile' %}" 
-     class="hidden lg:block text-gray-700 hover:text-blue-600 font-semibold">
-     Profile
-  </a>
+        <!-- Cart -->
+        <a href="{% url 'showcart' %}" class="relative p-2">
+          <svg class="w-7 h-7 text-gray-700 hover:text-blue-600"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5"/>
+          </svg>
 
-  <!-- Orders -->
-  <a href="{% url 'orders' %}" 
-     class="hidden lg:block text-gray-700 hover:text-blue-600 font-semibold">
-     Orders
-  </a>
+          {% if total_items > 0 %}
+          <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px]
+                       font-bold px-1.5 py-0.5 rounded-full">
+            {{ total_items }}
+          </span>
+          {% endif %}
+        </a>
 
-  <!-- Logout -->
-  <a href="{% url 'logout' %}" 
-     class="hidden lg:block text-red-500 font-semibold">
-     Logout
-  </a>
+        <!-- User Dropdown -->
+        <div class="hidden lg:block">
+          <select
+            onchange="if(this.value === 'logout'){ document.getElementById('logout-form').submit(); } else if(this.value) { window.location.href=this.value; }"
+            class="bg-white border border-gray-300 rounded-full px-4 py-2
+                   text-gray-700 font-medium cursor-pointer">
 
-  <!-- Cart -->
-  <a href="{% url 'showcart' %}" class="relative p-2">
+            <option selected disabled>{{ user.username }}</option>
+            <option value="{% url 'profile' %}">👤 Profile</option>
+            <option value="{% url 'orders' %}">📦 Orders</option>
+            <option value="{% url 'passwordchange' %}">🔑 Change Password</option>
+            <option value="logout">🚪 Logout</option>
+          </select>
 
-   {% else %}
+          <form id="logout-form" action="{% url 'logout' %}" method="POST" class="hidden">
+            {% csrf_token %}
+          </form>
+        </div>
 
-<a href="{% url 'login' %}" 
-   class="hidden lg:block text-gray-700 hover:text-blue-600 font-semibold">
-   Login
-</a>
+        {% else %}
 
-<a href="{% url 'registration' %}" 
-   class="hidden lg:block text-blue-600 font-semibold">
-   Register
-</a>
+        <!-- Login / Register Desktop -->
+        <div class="hidden lg:flex items-center gap-4">
+          <a href="{% url 'login' %}"
+             class="text-gray-700 font-medium hover:text-blue-600">
+             Login
+          </a>
 
-{% endif %}
-    
+          <a href="{% url 'registration' %}"
+             class="bg-blue-600 text-white px-4 py-2 rounded-full
+                    text-sm font-semibold hover:bg-blue-700">
+             Register
+          </a>
+        </div>
+
+        {% endif %}
+
+        <!-- Mobile Button -->
+        <button id="menu-btn" class="lg:hidden">
+          <svg class="w-7 h-7 text-gray-700"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
     <div class="px-4 py-4 space-y-3">
 
-      <a href="/" class="block text-gray-700 font-medium">Home</a>
-      <a href="{% url 'shop' %}" class="block text-gray-700 font-medium">Shop</a>
-      <a href="{% url 'contact' %}" class="block text-gray-700 font-medium">Contact</a>
+      <a href="/" class="block">Home</a>
+      <a href="/shop/" class="block">Shop</a>
+      <a href="/contact/" class="block">Contact</a>
 
       <!-- Mobile Search -->
-      <form action="/search/" method="GET" class="pt-2">
-        <input type="text" name="query" placeholder="Search..."
+      <form action="/search/" method="GET">
+        <input type="text" name="query"
+          placeholder="Search..."
           class="w-full bg-gray-100 rounded-full py-2 px-4 text-sm outline-none">
       </form>
 
       {% if user.is_authenticated %}
-      <a href="{% url 'profile' %}" class="block text-gray-700">👤 Profile</a>
-      <a href="{% url 'orders' %}" class="block text-gray-700">📦 Orders</a>
+      <a href="{% url 'profile' %}" class="block">👤 Profile</a>
+      <a href="{% url 'orders' %}" class="block">📦 Orders</a>
       <a href="{% url 'logout' %}" class="block text-red-500">🚪 Logout</a>
       {% else %}
-      <a href="{% url 'login' %}" class="block text-gray-700">Login</a>
+      <a href="{% url 'login' %}" class="block">Login</a>
       <a href="{% url 'registration' %}" class="block text-blue-600 font-semibold">Register</a>
       {% endif %}
 
     </div>
   </div>
-
 </nav>
 
 
