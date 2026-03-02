@@ -4,52 +4,58 @@
 
 {% block content %}
 
-<div class="max-w-6xl mx-auto px-4 mt-10">
+<div class="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
     <!-- 🔵 LEFT SIDE - Order Summary -->
-    <div class="md:col-span-2">
+    <div class="lg:col-span-2">
 
-      <h2 class="text-2xl font-semibold mb-4">Order Summary</h2>
+      <h2 class="text-xl sm:text-2xl font-semibold mb-4">
+        Order Summary
+      </h2>
       <hr class="mb-4">
 
       {% if cart_items %}
 
         <!-- ✅ Products List -->
         {% for item in cart_items %}
-        <div class="bg-gray-100 shadow border border-black rounded-lg p-4 mb-4">
-          
-          <div class="flex justify-between items-center">
-            
-            <!-- 🔹 Left Side: Image + Details -->
+        <div class="bg-gray-50 shadow-sm border rounded-xl p-4 mb-4 hover:shadow-md transition">
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+            <!-- 🔹 Image + Details -->
             <div class="flex items-center gap-4">
-              
-              <!-- Product Image -->
-              <div>
-               
-  <img src="{{ item.product.product_image.url }}" 
-       alt="{{ item.product.title }}"
-       class="w-24 h-24 object-cover rounded">
 
-  
+              {% if item.product.product_image %}
+              <img src="{{ item.product.product_image.url }}"
+                   alt="{{ item.product.title }}"
+                   class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg">
+              {% else %}
+              <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                No Image
               </div>
+              {% endif %}
 
-              <!-- Product Details -->
               <div>
-                <h5 class="text-lg font-semibold">
+                <h5 class="text-sm sm:text-lg font-semibold leading-tight">
                   {{ item.product.title }}
                 </h5>
 
-                <p class="text-gray-600">
+                <p class="text-gray-600 text-xs sm:text-sm">
                   Quantity: {{ item.quantity }}
                 </p>
 
-                <p class="text-gray-600">
+                <p class="text-gray-600 text-xs sm:text-sm">
                   Price: ₹ {{ item.product.discounted_price }}
                 </p>
               </div>
 
+            </div>
+
+            <!-- Item Total -->
+            <div class="text-left sm:text-right font-semibold text-sm sm:text-base">
+              ₹ {{ item.total_price }}
             </div>
 
           </div>
@@ -58,15 +64,29 @@
         {% endfor %}
 
         <!-- ✅ Price Summary -->
-        <div class="bg-white shadow border border-black rounded-lg p-4 mt-6">
-          <h2 class="text-xl font-semibold mb-4">Price Summary</h2>
-          
-          <p>Subtotal: ₹ {{ amount }}</p>
-          <p>Shipping: ₹ {{ shipping_amount }}</p>
-          
-          <h4 class="text-lg font-bold mt-2">
-            Total: ₹ {{ totalamount }}
-          </h4>
+        <div class="bg-white shadow border rounded-xl p-5 mt-6">
+
+          <h2 class="text-lg sm:text-xl font-semibold mb-4">
+            Price Summary
+          </h2>
+
+          <div class="flex justify-between text-sm sm:text-base mb-2">
+            <span>Subtotal</span>
+            <span>₹ {{ amount }}</span>
+          </div>
+
+          <div class="flex justify-between text-sm sm:text-base mb-2">
+            <span>Shipping</span>
+            <span>₹ {{ shipping_amount }}</span>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="flex justify-between font-bold text-base sm:text-lg">
+            <span>Total</span>
+            <span>₹ {{ totalamount }}</span>
+          </div>
+
         </div>
 
       {% else %}
@@ -77,9 +97,11 @@
 
 
     <!-- 🔵 RIGHT SIDE - Shipping Address -->
-    <div class="sticky top-20 h-fit">
+    <div class="lg:sticky lg:top-20 h-fit">
 
-      <h2 class="text-2xl font-semibold mb-4">Select Shipping Address</h2>
+      <h2 class="text-xl sm:text-2xl font-semibold mb-4">
+        Select Shipping Address
+      </h2>
       <hr class="mb-4">
 
       <form method="post" action="{% url 'paymentdone' %}">
@@ -88,37 +110,38 @@
         {% if addresses %}
           {% for address in addresses %}
 
-          <div class="bg-gray-100 shadow border border-black rounded-lg p-4 mb-4">
+          <label class="block bg-gray-50 shadow-sm border rounded-xl p-4 mb-4 cursor-pointer hover:shadow-md transition">
 
-            <label class="flex items-start gap-3 cursor-pointer">
-              
+            <div class="flex items-start gap-3">
+
               <input type="radio"
                      name="custid"
-                     id="custadd{{ forloop.counter }}"
                      value="{{ address.id }}"
                      class="mt-1"
                      required>
 
               <div>
-                <h5 class="font-semibold">{{ address.name }}</h5>
-                <p class="text-gray-600">
+                <h5 class="font-semibold text-sm sm:text-base">
+                  {{ address.name }}
+                </h5>
+                <p class="text-gray-600 text-xs sm:text-sm">
                   {{ address.city }}, {{ address.state }}
                 </p>
-                <p class="text-gray-600">
+                <p class="text-gray-600 text-xs sm:text-sm">
                   Pincode: {{ address.pincode }}
                 </p>
               </div>
 
-            </label>
+            </div>
 
-          </div>
+          </label>
 
           {% endfor %}
 
-          <div class="text-right mt-4">
+          <div class="mt-4">
             <button type="submit"
-                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg shadow">
-                Continue
+              class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 rounded-xl shadow transition">
+              Continue to Payment
             </button>
           </div>
 

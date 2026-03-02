@@ -4,32 +4,35 @@
 
 {% block content %}
 
-<!-- Vegetables -->
+<div class="bg-red-600 py-4 sm:py-5 border-blue-100">
+   <h2 class="text-2xl sm:text-4xl font-bold text-center text-white px-2">
+       All Vegetables
+   </h2>
+   <p class="text-sm sm:text-base text-white text-center mt-2 px-3">
+       Fresh essentials delivered to your doorstep
+   </p>
 
-<div class="bg-red-600 py-5 border-blue-100">
-   <h2 class="text-4xl font-bold text-center text-white">All Vegetables</h2>
-    <p class="text-white text-center mt-2">Fresh essentials delivered to your doorstep</p>
-    <!-- TOP NAV BUTTONS -->
-<div class="max-w-7xl mx-auto px-4 pt-6 flex justify-between items-center">
+<!-- TOP NAV BUTTONS -->
+<div class="max-w-7xl mx-auto px-3 sm:px-4 pt-4 sm:pt-6 flex justify-between items-center">
   <a href="javascript:history.back()" 
-     class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+     class="bg-slate-800 hover:bg-slate-900 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
     ← Back
   </a>
 
   <a href="" 
-     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+     class="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition">
     Next →
   </a>
 </div>
 </div>
-<div class="max-w-[1400px] mx-auto px-4 py-10">
+
+
+<div class="max-w-[1400px] mx-auto px-3 sm:px-4 py-6 sm:py-10">
     <div class="flex flex-col md:flex-row gap-6">
         
+        <!-- Sidebar -->
         <aside class="w-full md:w-64 flex-shrink-0">
-            <div class="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden sticky top-5">
-                <!-- <div class="bg-gray-100 text-gray-700 uppercase text-xs font-bold tracking-wider py-3 px-4 border-b">
-                    
-                </div> -->
+            <div class="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden md:sticky md:top-5">
                 <ul class="text-gray-600 text-sm">
                     <li class="border-b hover:bg-blue-50 transition-colors group">
                         <a href="{% url 'vegetables' %}" class="py-3 px-4 font-medium group-hover:text-blue-600 block w-full">
@@ -46,54 +49,67 @@
                           Surface Vegetables  
                         </a>
                     </li>
-                     
                 </ul>
             </div>
         </aside> 
 
 
 
-        <main class="flex-1 gap-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Products -->
+        <main class="flex-1">
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {% for product in vegetable %}
-                <div class="bg-white border rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                <div class="bg-white border rounded-xl p-3 sm:p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    
                     <div>
-                      <a href="{% url 'productdetail' product.id %}" class="block flex-grow">
-                        <div class="h-48 flex items-center justify-center mb-4">
+                      <a href="{% url 'productdetail' product.id %}" class="block">
+
+                        <!-- Image -->
+                        <div class="h-36 sm:h-48 flex items-center justify-center mb-3 sm:mb-4">
                             {% if product.product_image %}
                                 <img src="{{ product.product_image.url }}" class="max-h-full object-contain">
                             {% else %}
-                                <div class="bg-gray-100 w-full h-full flex items-center justify-center text-gray-400 rounded-lg">No Image</div>
+                                <div class="bg-gray-100 w-full h-full flex items-center justify-center text-gray-400 rounded-lg text-xs">
+                                    No Image
+                                </div>
                             {% endif %}
                         </div>
 
-                        <h3 class="font-bold text-gray-800 h-12 overflow-hidden leading-tight">
+                        <!-- Title -->
+                        <h3 class="font-bold text-gray-800 text-sm sm:text-base h-10 sm:h-12 overflow-hidden leading-tight">
                             {{ product.title }}
                         </h3>
 
+                        <!-- Price -->
                         <div class="mt-2">
-                            <span class="text-xl font-bold text-indigo-600">
+                            <span class="text-base sm:text-xl font-bold text-indigo-600">
                                 ₹{{product.discounted_price}}
                             </span>
-                            <span class="text-sm text-gray-400 line-through ml-2">
+                            <span class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">
                                 ₹{{product.selling_price}}
                             </span>
                         </div>
+                      </a>
                     </div>
 
-                    <div class="mt-6 flex gap-2">
-                        <a href="#" class="flex-1 text-center bg-slate-800 hover:bg-slate-900 text-white py-2.5 rounded-lg text-sm font-medium transition">
+                    <!-- Buttons -->
+                    <div class="mt-4 sm:mt-6 flex gap-2">
+                        <a href="#" 
+                           class="flex-1 text-center bg-slate-800 hover:bg-slate-900 text-white py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition">
                             Add to Cart
                         </a>
-                        <a href="" class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg text-sm font-medium transition">
+                        <a href="" 
+                           class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition">
                             View Details
                         </a>
                     </div>
-                    </a>
+
                 </div>
                 {% empty %}
-                <div class="col-span-full text-center py-20 text-gray-500 bg-gray-50 rounded-xl border-2 border-dashed">
-                    <p class="text-lg">Database mein koi Grocery item nahi mila.</p>
+                <div class="col-span-full text-center py-12 sm:py-20 text-gray-500 bg-gray-50 rounded-xl border-2 border-dashed">
+                    <p class="text-base sm:text-lg">
+                        Database mein koi Vegetable item nahi mila.
+                    </p>
                 </div>
                 {% endfor %}
             </div>
@@ -101,5 +117,5 @@
 
     </div>
 </div>
-{% endblock content %}
 
+{% endblock content %}

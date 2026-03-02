@@ -1,15 +1,19 @@
-<div class="flex flex-col  m-0 p-0">
-  
-  <!-- <nav class="h-16 bg-white shadow">Navbar</nav> -->
-<!-- 
-  <main class="flex-1">
-    <section class="p-8">
-      <h2 class="text-2xl font-bold">Shoes</h2>
-      </section>
-  </main> -->
+<body class="flex flex-col min-h-screen">
 
-  <footer class="bg-[#111827] text-white py-2 text-center mt-auto bottom-0 fixed w-full">
-    <p>© 2026 ShopKart. All Rights Reserved</p>
+  <!-- Navbar -->
+  <!-- <nav class="h-16 bg-white shadow">Navbar</nav> -->
+
+  <!-- Main Content -->
+  <main class="flex-1">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#111827] text-white py-3 text-center">
+    <p class="text-sm sm:text-base">
+      © 2026 ShopKart. All Rights Reserved
+    </p>
   </footer>
 
-</div>
+</body>

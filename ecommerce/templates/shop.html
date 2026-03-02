@@ -4,32 +4,38 @@
 
 {% block content %}
 
-<div class="max-w-7xl mx-auto px-4 py-10">
+<div class="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
 
-  <h2 class="text-3xl font-bold mb-8 text-center">All Products</h2>
+  <h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
+    All Products
+  </h2>
 
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
 
     <!-- 🔹 Sidebar Filter -->
-    <div class="bg-white shadow-md rounded-xl p-6 h-fit">
+    <div class="bg-white shadow-md rounded-xl p-4 sm:p-6 h-fit">
 
-      <h3 class="text-xl font-semibold mb-4">Categories</h3>
+      <h3 class="text-lg sm:text-xl font-semibold mb-4">Categories</h3>
 
-      <div class="flex flex-col gap-2">
-        <a href="/shop/" class="hover:text-blue-600">All</a>
-        <a href="?category=E" class="hover:text-blue-600">Electronics</a>
-        <a href="?category=F" class="hover:text-blue-600">Fashion</a>
-        <a href="?category=V" class="hover:text-blue-600">Vegetables</a>
-        <a href="?category=G" class="hover:text-blue-600">Grocery</a>
+      <div class="flex flex-col gap-2 text-sm sm:text-base">
+        <a href="/shop/" class="hover:text-blue-600 transition">All</a>
+        <a href="?category=E" class="hover:text-blue-600 transition">Electronics</a>
+        <a href="?category=F" class="hover:text-blue-600 transition">Fashion</a>
+        <a href="?category=V" class="hover:text-blue-600 transition">Vegetables</a>
+        <a href="?category=G" class="hover:text-blue-600 transition">Grocery</a>
       </div>
 
-      <hr class="my-6">
+      <hr class="my-5 sm:my-6">
 
-      <h3 class="text-xl font-semibold mb-4">Sort By</h3>
+      <h3 class="text-lg sm:text-xl font-semibold mb-4">Sort By</h3>
 
-      <div class="flex flex-col gap-2">
-        <a href="?sort=low" class="hover:text-blue-600">Price: Low to High</a>
-        <a href="?sort=high" class="hover:text-blue-600">Price: High to Low</a>
+      <div class="flex flex-col gap-2 text-sm sm:text-base">
+        <a href="?sort=low" class="hover:text-blue-600 transition">
+          Price: Low to High
+        </a>
+        <a href="?sort=high" class="hover:text-blue-600 transition">
+          Price: High to Low
+        </a>
       </div>
 
     </div>
@@ -37,38 +43,57 @@
     <!-- 🔹 Product Grid -->
     <div class="lg:col-span-3">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
 
         {% for product in products %}
-        <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-xl transition duration-300">
+        <div class="bg-white rounded-xl shadow-md p-3 sm:p-4 hover:shadow-xl transition duration-300 flex flex-col justify-between">
 
-          <img src="{{ product.product_image.url }}"
-               alt="{{ product.title }}"
-               class="w-full h-48 object-contain mb-4">
+          <!-- Product Image -->
+          <a href="{% url 'productdetail' product.id %}">
+            <div class="h-36 sm:h-48 flex items-center justify-center mb-3 sm:mb-4">
+              {% if product.product_image %}
+                <img src="{{ product.product_image.url }}"
+                     alt="{{ product.title }}"
+                     class="max-h-full object-contain">
+              {% else %}
+                <div class="w-full h-full bg-gray-100 flex items-center justify-center text-xs text-gray-400 rounded-lg">
+                  No Image
+                </div>
+              {% endif %}
+            </div>
+          </a>
 
-          <h3 class="font-semibold text-lg mb-2">
+          <!-- Product Info -->
+          <h3 class="font-semibold text-sm sm:text-lg mb-1 sm:mb-2 h-10 sm:h-12 overflow-hidden leading-tight">
             {{ product.title }}
           </h3>
 
-          <p class="text-blue-600 font-bold text-lg">
+          <p class="text-blue-600 font-bold text-sm sm:text-lg mb-3">
             ₹{{ product.discounted_price }}
           </p>
 
-           <div class="flex gap-2">
-                <form action="{% url 'add-to-cart' %}" method="GET" class="flex-1">
-    
-    <input type="hidden" name="prod_id" value="{{ product.id }}">
-    <button type="submit"
-        class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition-all duration-300 text-sm active:scale-95">
-        Add to Cart
-    </button>
-</form>
-                <a href="{% url 'checkout' %}"
-                  class="flex-1 text-center bg-[#1e293b] hover:bg-[#334155] text-white font-medium py-2.5 rounded-xl transition-all duration-300 text-sm active:scale-95">
-                  Buy Now
-                </a>
-              </div>
+          <!-- Buttons -->
+          <div class="flex gap-2 mt-auto">
 
+            <form action="{% url 'add-to-cart' %}" method="GET" class="flex-1">
+              <input type="hidden" name="prod_id" value="{{ product.id }}">
+              <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 sm:py-2.5 rounded-xl transition-all duration-300 text-xs sm:text-sm active:scale-95">
+                Add to Cart
+              </button>
+            </form>
+
+            <a href="{% url 'checkout' %}"
+              class="flex-1 text-center bg-slate-800 hover:bg-slate-900 text-white py-2 sm:py-2.5 rounded-xl transition-all duration-300 text-xs sm:text-sm active:scale-95">
+              Buy Now
+            </a>
+
+          </div>
+
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12 text-gray-500 bg-gray-50 rounded-xl border-2 border-dashed">
+          No products found.
         </div>
         {% endfor %}
 
